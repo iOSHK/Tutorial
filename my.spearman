@@ -1,0 +1,49 @@
+my.spearman <- function(x, y, Data){
+
+  Xr <- rank(Data[x])
+  Yr <- rank(Data[y])
+
+  Rx <- as.numeric(as.vector(table(rank(Data[x]))))
+  Ry <- as.numeric(as.vector(table(rank(Data[y]))))
+
+  xx <- Rx[which(Rx > 1)]
+  if (identical(xx, numeric(0))){
+    xx <- 0
+  }
+  # xx = xx - 1
+  # if (xx = 1){
+  #   xx <- 1-xx
+  #   return(xx)
+  # }
+
+  yy <- Ry[which(Ry > 1)]
+  if (identical(yy, numeric(0))){
+    yy <- 0
+  }
+  # yy = yy - 1
+  # if (yy = 1){
+  #   yy <- 1-yy
+  #   return(yy)
+  # }
+
+
+  total.c.f <- function(x){
+    sum.c.f <- 0
+    for(i in 1:length(x)){
+      dd <- x[i]
+      c.f <- dd*(dd^2-1)/12
+      sum.c.f <- sum.c.f + c.f
+
+    }
+    return(sum.c.f)
+  }
+
+  total.c.f.x <- total.c.f(xx)
+  total.c.f.y <- total.c.f(yy)
+
+  devia <- sum((Xr-Yr)^2)+total.c.f.y+total.c.f.x
+
+  spear <- 1-((6*devia)/((length(Xr))*(length(Xr)^2-1)))
+
+  return(spear)
+}
